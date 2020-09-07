@@ -13,21 +13,6 @@ h1 {
 }
 
 .btn {
-    /* padding: 5px; */
-    background: blue;
-}
-
-input[type=text] {
-    float: right;
-    padding: 6px;
-    border: none;
-    margin-top: 8px;
-    margin-right: 16px;
-    font-size: 17px;
-    width: 75%;
-}
-
-.btn {
     background-color: rgb(8, 153, 243);
 }
 

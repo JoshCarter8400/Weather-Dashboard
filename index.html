@@ -21,32 +21,23 @@
 <div class="row min-vh-100 no-gutters">
     <header class="col-12 col-lg-3 bg-light text-light sticky-top d-flex flex-column p-4 p-lg-3">
         <h3 class="city"><span class="oi oi-task d-inline d-lg-none"></span>Search for a City:</h3>
-        <div class="container">
-            <div class="row">
-                <div class="input-group col-sm-10">
-                    <input class="form-control py-2" name="find-city" type="search" value="search" id="search-input">
 
-                    <button class=" col-sm-2 btn btn-outline-secondary btn-sm" id="search-btn" type="button">
-                        <i class="fa fa-search"></i>
-                    </button>
+        <div class="row">
+            <div class="input-group col-sm-9">
+                <input class="form-control py-2" name="find-city" type="search" value="search" id="search-input">
 
-                </div>
+                <button class=" col-sm-2 btn btn-outline-secondary btn-sm" id="search-btn" type="button">
+                    <i class="fa fa-search"></i>
+                </button>
+
             </div>
         </div>
 
+
         <div class="mt-5 row">
             <div class="col-12">
-                <div class="card" style="width: 18rem;">
-                    <ul id="city" class="list-group list-group-flush">
-                        <li class="list-group-item">test</li>
-                        <li class="list-group-item">test</li>
-                        <li class="list-group-item">test</li>
-                        <li class="list-group-item">test</li>
-                        <li class="list-group-item">test</li>
-                        <li class="list-group-item">test</li>
-                        <li class="list-group-item">test</li>
-                        <li class="list-group-item">test</li>
-                    </ul>
+                <div id="city-container" class="card list-group" style="width: 18rem;">
+
                 </div>
             </div>
         </div>
@@ -93,7 +84,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card-deck">
+            <div class="card">
                 <div class="card bg-primary">
                     <div class="card-body">
                         <h5 class="card-title"></h5>
@@ -103,16 +94,17 @@
                     </div>
                 </div>
             </div>
-            <div class="card-deck">
+            <div class="card">
                 <div class="card bg-primary">
                     <div class="card-body">
-                        <h5 class="card-title"><span class="oi oi-sun"></span>9/20/20</h5>
+                        <h5 class="card-title">9/20/20</h5>
+                        <span class="oi oi-sun"></span>
                         <p class="card-text temp">temp: 86</p>
                         <p class="card-text humid">humidity 43%</p>
                     </div>
                 </div>
             </div>
-            <div class="card-deck">
+            <div class="card">
                 <div class="card bg-primary">
                     <div class="card-body">
                         <h5 class="card-title"></h5>
@@ -122,7 +114,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card-deck">
+            <div class="card">
                 <div class="card bg-primary">
                     <div class="card-body">
                         <h5 class="card-title"></h5>

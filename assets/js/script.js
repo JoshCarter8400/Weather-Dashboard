@@ -5,18 +5,27 @@ var cityCard = document.querySelector("#city-container")
 
 
 
-var getWeatherInfo = function(user) {
+var getWeatherInfo = function(city) {
 
     // format the github api url
-    var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + user + "&appid=8d1c76621b3c56e2c6ba4131cbdbfec9";
+    var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=8d1c76621b3c56e2c6ba4131cbdbfec9";
 
     // make a repo request to the url
     fetch(apiUrl).then(function(repsonse) {
         repsonse.json().then(function(data) {
-            // displayWeather(data, user);
+            displayWeather(data);
             console.log(data)
+            var lat = 90
+            var long = 90
         });
+        // .then(function(response) {
+        //     response.json().then(function(data) {
+        //         displayUvIndex(data)
+        //     })
+        // })
     });
+
+
 };
 
 
@@ -25,10 +34,11 @@ var searchHandler = function(event) {
     event.preventDefault();
     // get value from input element
     var searchInput = document.querySelector("#search-input")
-    var weather = searchInput.value.trim();
-    console.log(weather)
-    if (weather) {
-        getWeatherInfo(weather);
+    var city = searchInput.value.trim();
+    console.log(city)
+    if (city) {
+        getWeatherInfo(city);
+        cityHistory(city)
         searchInput.value = "";
     } else {
         alert("Please select a City")
@@ -36,36 +46,29 @@ var searchHandler = function(event) {
 }
 
 
-var displayWeather = function(weather, searchInput) {
+var displayWeather = function(data) {
+    var conditions = data.list[0];
+    console.log(conditions)
+    var currentTemp = data.list[0].main.temp
+    console.log(currentTemp)
+    var currentHumid = data.list[0].main.humidity
+    console.log(currentHumid)
 
-    // clear old content 
-    cityCard.textContent = "";
-    searchInput.textContent = searchInput;
-
-    // loop over weather days 
-    for (var i = 0; i < conditions.length; i + 8) {
-        var currentConditions = conditions[i].place.login + "/" + conditions[i].name;
-
-        //create a container for weather
-        var showWeather = document.querySelector(".weather-date-location");
-        showWeather.innerHTML = "<h3 class='today-weather'</h3>" + currentConditions;
-
-    }
-    console.log(weather)
 
 }
 
-var cityHistory = function(cityList, showCity) {
-    // clear old search
-    cityCard.textContent = "";
-    searchInput.textContent = showCity
+var cityHistory = function(showCity) {
+    // // clear old search
+    // cityCard.textContent = "";
+    // showCity.textContent = searchInput
 
     // create list item for each city
     var historyOne = document.createElement("li")
-    historyOne.classList = ("list-group-item")
-    historyOne.querySelector(".list-group").innerHTML = searchInput
+    historyOne.classList = "list-group-item"
+    historyOne.textContent = showCity + "";
 
 
-    searchInput.appendChild(cityCard)
+    cityCard.appendChild(historyOne)
 }
+
 findCity.addEventListener("click", searchHandler);

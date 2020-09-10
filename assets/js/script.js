@@ -15,8 +15,8 @@ var getWeatherInfo = function(city) {
         repsonse.json().then(function(data) {
             displayWeather(data);
             console.log(data)
-            var lat = 90
-            var long = 90
+                // var lat = 90
+                // var long = 91
         });
         // .then(function(response) {
         //     response.json().then(function(data) {
@@ -39,6 +39,7 @@ var searchHandler = function(event) {
     if (city) {
         getWeatherInfo(city);
         cityHistory(city)
+
         searchInput.value = "";
     } else {
         alert("Please select a City")
@@ -49,18 +50,37 @@ var searchHandler = function(event) {
 var displayWeather = function(data) {
     var conditions = data.list[0];
     console.log(conditions)
-    var currentTemp = data.list[0].main.temp
+    var currentTemp = data.list[0].main.temp;
     console.log(currentTemp)
-    var currentHumid = data.list[0].main.humidity
+    var currentHumid = data.list[0].main.humidity;
     console.log(currentHumid)
+    var currentWind = data.list[0].wind;
+    console.log(currentWind)
+    currentTime = data.list[0].city;
+    console.log(currentTime)
+
+    var cityTemp = document.querySelector(".weather-data")
+    var showConditions = document.createElement("h5")
+    showConditions.classList = "temp"
+    showConditions.textContent = currentTemp;
+
+    cityTemp.appendChild(showConditions)
+
+    var cityHumidity = document.querySelector(".weather-data")
+    var showHumidity = document.createElement("h5")
+    showHumidity.classList = "humid"
+    showHumidity.textContent = currentHumid;
+
+
+    cityTemp.appendChild(currentHumid)
+
+
 
 
 }
 
 var cityHistory = function(showCity) {
-    // // clear old search
-    // cityCard.textContent = "";
-    // showCity.textContent = searchInput
+
 
     // create list item for each city
     var historyOne = document.createElement("li")

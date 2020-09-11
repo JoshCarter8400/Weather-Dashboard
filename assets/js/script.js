@@ -48,6 +48,10 @@ var searchHandler = function(event) {
 
 
 var displayWeather = function(data, city) {
+
+    // clear content
+    document.querySelector(".weather-data").textContent = "";
+    document.querySelector(".card-deck").innerHTML = "";
     console.log(city)
     var conditions = data.list[0];
     console.log(conditions)
@@ -59,10 +63,13 @@ var displayWeather = function(data, city) {
     console.log(currentWind)
 
     var currentDate = moment().format("M/D/YYYY")
-    console.log(currentDate)
+
+    var iconDisplay = "<img src= 'http://openweathermap.org/img/wn/" + data.list[0].weather[0].icon + "@2x.png' />"
+        // console.log(iconDisplay)
+        // console.log(currentDate)
     var cityLocation = document.createElement("h2")
     cityLocation.classList = "bold-city"
-    cityLocation.innerHTML = city + currentDate
+    cityLocation.innerHTML = city + ": " + currentDate + iconDisplay
 
     var cityTemp = document.querySelector(".weather-data")
     var showConditions = document.createElement("h5")
@@ -87,17 +94,26 @@ var displayWeather = function(data, city) {
 
     var cardDeck = document.querySelector(".card-deck")
 
+
     for (var i = 0; i < data.list.length; i += 8) {
         var fiveDay = (data.list[i])
+        var dayDate = moment.unix(fiveDay.dt).format("M/D/YYYY")
         var card = document.createElement("div")
         card.classList = "card bg-primary"
-        card.textContent = fiveDay.main.temp
+        var cardBody = document.createElement("div")
+        cardBody.classList = "card-body"
+        var dateDisplay = "<p>" + dayDate + "</p>"
+        var iconDisplay = "<img src= 'http://openweathermap.org/img/wn/" + fiveDay.weather[0].icon + "@2x.png' />"
+        console.log(iconDisplay)
+        var tempDisplay = "<p> Temp: " + Math.floor(fiveDay.main.temp) + "</p>"
+        var humidityDisplay = "<p> Humidity: " + fiveDay.main.humidity + "</p>"
+        cardBody.innerHTML = dateDisplay + iconDisplay + tempDisplay + humidityDisplay
+        card.appendChild(cardBody)
         cardDeck.appendChild(card)
+
+
     }
-
-
 }
-
 var cityHistory = function(showCity) {
 
 

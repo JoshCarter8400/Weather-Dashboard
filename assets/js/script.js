@@ -56,8 +56,7 @@ var displayWeather = function(data) {
     console.log(currentHumid)
     var currentWind = data.list[0].wind;
     console.log(currentWind)
-    currentTime = data.list[0].city;
-    console.log(currentTime)
+
 
     var cityTemp = document.querySelector(".weather-data")
     var showConditions = document.createElement("h5")

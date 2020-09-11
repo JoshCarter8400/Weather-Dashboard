@@ -13,7 +13,7 @@ var getWeatherInfo = function(city) {
     // make a repo request to the url
     fetch(apiUrl).then(function(repsonse) {
         repsonse.json().then(function(data) {
-            displayWeather(data);
+            displayWeather(data, city);
             console.log(data)
                 // var lat = 90
                 // var long = 91
@@ -47,33 +47,53 @@ var searchHandler = function(event) {
 }
 
 
-var displayWeather = function(data) {
+var displayWeather = function(data, city) {
+    console.log(city)
     var conditions = data.list[0];
     console.log(conditions)
     var currentTemp = data.list[0].main.temp;
     console.log(currentTemp)
     var currentHumid = data.list[0].main.humidity;
     console.log(currentHumid)
-    var currentWind = data.list[0].wind;
+    var currentWind = data.list[0].wind.speed;
     console.log(currentWind)
 
+    var currentDate = moment().format("M/D/YYYY")
+    console.log(currentDate)
+    var cityLocation = document.createElement("h2")
+    cityLocation.classList = "bold-city"
+    cityLocation.innerHTML = city + currentDate
 
     var cityTemp = document.querySelector(".weather-data")
     var showConditions = document.createElement("h5")
     showConditions.classList = "temp"
-    showConditions.textContent = currentTemp;
+    showConditions.innerHTML = "<h3> Temprature: " + currentTemp + "</h3>";
 
 
 
-    var cityTemp = document.querySelector(".weather-data")
-    var showConditions = document.createElement("h5")
+
+    var showHumidity = document.createElement("h5")
     showHumidity.classList = "humid"
-    showHumidity.textContent = currentHumid;
+    showHumidity.innerHTML = "<h3> Humidity: " + currentHumid + "</h3>";
 
+    var showWind = document.createElement("h5")
+    showWind.classList = "wind"
+    showWind.innerHTML = "<h3> Wind Speed: " + currentWind + "<h3>";
+
+    cityTemp.appendChild(cityLocation)
     cityTemp.appendChild(showConditions)
     cityTemp.appendChild(showHumidity)
+    cityTemp.appendChild(showWind)
 
+    var cardDeck = document.querySelector(".card-deck")
 
+    for (var i = 0; i < data.list.length; i += 8) {
+        var fiveDay = (data.list[i])
+        var card = document.createElement("div")
+        card.classList = "card bg-primary"
+        card.textContent = fiveDay.main.temp
+        cardDeck.appendChild(card)
+    }
 
 
 }

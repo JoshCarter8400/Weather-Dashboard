@@ -6,8 +6,8 @@ var cityCard = document.querySelector("#city-container")
 
 
 var getWeatherInfo = function(city) {
-
-    // format the github api url
+    var uvi = document.querySelector("#uvi")
+        // format the github api url
     var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=8d1c76621b3c56e2c6ba4131cbdbfec9";
 
     // make a repo request to the url
@@ -64,15 +64,15 @@ var displayWeather = function(data) {
     showConditions.classList = "temp"
     showConditions.textContent = currentTemp;
 
-    cityTemp.appendChild(showConditions)
 
-    var cityHumidity = document.querySelector(".weather-data")
-    var showHumidity = document.createElement("h5")
+
+    var cityTemp = document.querySelector(".weather-data")
+    var showConditions = document.createElement("h5")
     showHumidity.classList = "humid"
     showHumidity.textContent = currentHumid;
 
-
-    cityTemp.appendChild(currentHumid)
+    cityTemp.appendChild(showConditions)
+    cityTemp.appendChild(showHumidity)
 
 
 

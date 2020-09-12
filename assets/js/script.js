@@ -116,7 +116,7 @@ var displayWeather = function(data, city, uvData) {
 
 
     var fiveHeader = document.querySelector("#five-day-header")
-    fiveHeader.innerHTML = "<h4> 5 Day Forcast: </h4>"
+    fiveHeader.innerHTML = "<h2> 5 Day Forcast: </h2>"
     var cardDeck = document.querySelector(".card-deck")
 
 

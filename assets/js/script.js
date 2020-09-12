@@ -82,11 +82,11 @@ var displayWeather = function(data, city, uvData) {
 
     var showHumidity = document.createElement("h5")
     showHumidity.classList = "humid"
-    showHumidity.innerHTML = "<h3> Humidity: " + currentHumid + "</h3>";
+    showHumidity.innerHTML = "<h3> Humidity: " + currentHumid + "% </h3>";
 
     var showWind = document.createElement("h5")
     showWind.classList = "wind"
-    showWind.innerHTML = "<h3> Wind Speed: " + currentWind + "<h3>";
+    showWind.innerHTML = "<h3> Wind Speed: " + currentWind + " MPH <h3>";
 
     var uvIndex = document.createElement("h5")
     uvIndex.classList = "uvi"
@@ -130,6 +130,7 @@ var cityHistory = function(showCity) {
 
 
     cityCard.appendChild(historyOne)
+    if (clickForCity != null) historyOne.onClick = clickCity
 }
 
 var clickCity = function(city) {
@@ -146,4 +147,3 @@ var clickCity = function(city) {
 
 
 findCity.addEventListener("click", searchHandler);
-if (clickForCity != null) historyOne.onClick = clickCity

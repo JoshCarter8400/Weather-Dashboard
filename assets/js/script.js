@@ -11,8 +11,8 @@ var getWeatherInfo = function(city) {
     var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=8d1c76621b3c56e2c6ba4131cbdbfec9";
 
     // make a repo request to the url
-    fetch(apiUrl).then(function(repsonse) {
-        repsonse.json().then(function(data) {
+    fetch(apiUrl).then(function(response) {
+        response.json().then(function(data) {
             var latitude = data.city.coord.lat
             var longitude = data.city.coord.lon
             return fetch("https://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=8d1c76621b3c56e2c6ba4131cbdbfec9").then(function(uvResponse) {
@@ -41,7 +41,10 @@ var searchHandler = function(event) {
     var searchInput = document.querySelector("#search-input")
     var city = searchInput.value.trim();
     console.log(city)
-    clickCity(city);
+    cityHistory(city);
+    getWeatherInfo(city);
+
+    searchInput.value = "";
 }
 
 function capitalFirst(string) {
@@ -113,6 +116,8 @@ var displayWeather = function(data, city, uvData) {
     }
 
 
+    var fiveHeader = document.querySelector("#five-day-header")
+    fiveHeader.innerHTML = "<h4> 5 Day Forcast: </h4>"
     var cardDeck = document.querySelector(".card-deck")
 
 
@@ -123,7 +128,7 @@ var displayWeather = function(data, city, uvData) {
         card.classList = "card bg-primary"
         var cardBody = document.createElement("div")
         cardBody.classList = "card-body"
-        var dateDisplay = "<p>" + dayDate + "</p>"
+        var dateDisplay = "<p id=date>" + dayDate + "</p>"
         var iconDisplay = "<img src= 'http://openweathermap.org/img/wn/" + fiveDay.weather[0].icon + "@2x.png' />"
         console.log(iconDisplay)
         var tempDisplay = "<p> Temp: " + Math.floor(fiveDay.main.temp) + "</p>"
@@ -142,7 +147,7 @@ var cityHistory = function(showCity) {
     var historyOne = document.createElement("li")
     historyOne.classList = "list-group-item"
     historyOne.textContent = showCity + "";
-
+    historyOne.setAttribute("style", "cursor: pointer");
 
     cityCard.appendChild(historyOne)
     if (clickForCity != null) historyOne.onClick = clickCity
@@ -152,7 +157,7 @@ var clickCity = function(city) {
     console.log("hello")
     if (city) {
         getWeatherInfo(city);
-        cityHistory(city)
+        // cityHistory(city)
 
         searchInput.value = "";
     } else {
@@ -162,4 +167,6 @@ var clickCity = function(city) {
 
 
 findCity.addEventListener("click", searchHandler);
-listItemE1.addEventListener("click", clickCity)
+listItemE1.addEventListener("click", function(e) {
+    clickCity(e.target.innerText)
+})

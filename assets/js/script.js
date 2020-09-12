@@ -2,27 +2,32 @@ var searchInput = document.querySelector("#search-input")
 var findCity = document.querySelector("#search-btn")
 var listItemE1 = document.querySelector(".list-group")
 var cityCard = document.querySelector("#city-container")
-
+var clickForCity = document.querySelector(".list-group-item")
 
 
 var getWeatherInfo = function(city) {
-    var uvi = document.querySelector("#uvi")
-        // format the github api url
+
+    // format the github api url
     var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=8d1c76621b3c56e2c6ba4131cbdbfec9";
 
     // make a repo request to the url
     fetch(apiUrl).then(function(repsonse) {
         repsonse.json().then(function(data) {
-            displayWeather(data, city);
-            console.log(data)
-                // var lat = 90
-                // var long = 91
+            var latitude = data.city.coord.lat
+            var longitude = data.city.coord.lon
+            return fetch("https://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=8d1c76621b3c56e2c6ba4131cbdbfec9").then(function(uvResponse) {
+                uvResponse.json().then(function(uvData) {
+                    displayWeather(data, city, uvData);
+                    console.log(data, uvData)
+                })
+            })
+
+
+
+
+
         });
-        // .then(function(response) {
-        //     response.json().then(function(data) {
-        //         displayUvIndex(data)
-        //     })
-        // })
+
     });
 
 
@@ -36,18 +41,12 @@ var searchHandler = function(event) {
     var searchInput = document.querySelector("#search-input")
     var city = searchInput.value.trim();
     console.log(city)
-    if (city) {
-        getWeatherInfo(city);
-        cityHistory(city)
-
-        searchInput.value = "";
-    } else {
-        alert("Please select a City")
-    }
+    clickCity(city);
 }
 
 
-var displayWeather = function(data, city) {
+
+var displayWeather = function(data, city, uvData) {
 
     // clear content
     document.querySelector(".weather-data").textContent = "";
@@ -61,6 +60,8 @@ var displayWeather = function(data, city) {
     console.log(currentHumid)
     var currentWind = data.list[0].wind.speed;
     console.log(currentWind)
+    var currentUv = uvData.value;
+    console.log(currentUv)
 
     var currentDate = moment().format("M/D/YYYY")
 
@@ -87,10 +88,15 @@ var displayWeather = function(data, city) {
     showWind.classList = "wind"
     showWind.innerHTML = "<h3> Wind Speed: " + currentWind + "<h3>";
 
+    var uvIndex = document.createElement("h5")
+    uvIndex.classList = "uvi"
+    uvIndex.innerHTML = "<h3> UV Index: " + currentUv + "</h3>"
+
     cityTemp.appendChild(cityLocation)
     cityTemp.appendChild(showConditions)
     cityTemp.appendChild(showHumidity)
     cityTemp.appendChild(showWind)
+    cityTemp.appendChild(uvIndex)
 
     var cardDeck = document.querySelector(".card-deck")
 
@@ -126,4 +132,18 @@ var cityHistory = function(showCity) {
     cityCard.appendChild(historyOne)
 }
 
+var clickCity = function(city) {
+    console.log("hello")
+    if (city) {
+        getWeatherInfo(city);
+        cityHistory(city)
+
+        searchInput.value = "";
+    } else {
+        alert("Please select a City")
+    }
+}
+
+
 findCity.addEventListener("click", searchHandler);
+if (clickForCity != null) historyOne.onClick = clickCity

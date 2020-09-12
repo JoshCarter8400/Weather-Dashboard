@@ -18,7 +18,7 @@ var getWeatherInfo = function(city) {
             return fetch("https://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=8d1c76621b3c56e2c6ba4131cbdbfec9").then(function(uvResponse) {
                 uvResponse.json().then(function(uvData) {
                     displayWeather(data, city, uvData);
-                    console.log(data, uvData)
+
                 })
             })
 
@@ -40,7 +40,7 @@ var searchHandler = function(event) {
     // get value from input element
     var searchInput = document.querySelector("#search-input")
     var city = searchInput.value.trim();
-    console.log(city)
+
     cityHistory(city);
     getWeatherInfo(city);
 
@@ -56,23 +56,22 @@ var displayWeather = function(data, city, uvData) {
     // clear content
     document.querySelector(".weather-data").textContent = "";
     document.querySelector(".card-deck").innerHTML = "";
-    console.log(city)
+
     var conditions = data.list[0];
-    console.log(conditions)
+
     var currentTemp = data.list[0].main.temp;
-    console.log(currentTemp)
+
     var currentHumid = data.list[0].main.humidity;
-    console.log(currentHumid)
+
     var currentWind = data.list[0].wind.speed;
-    console.log(currentWind)
+
     var currentUv = uvData.value;
-    console.log(currentUv)
+
 
     var currentDate = moment().format("M/D/YYYY")
 
     var iconDisplay = "<img src= 'http://openweathermap.org/img/wn/" + data.list[0].weather[0].icon + "@2x.png' />"
-        // console.log(iconDisplay)
-        // console.log(currentDate)
+
     city = capitalFirst(city);
     var cityLocation = document.createElement("h2")
     cityLocation.classList = "bold-city"
@@ -130,7 +129,7 @@ var displayWeather = function(data, city, uvData) {
         cardBody.classList = "card-body"
         var dateDisplay = "<p id=date>" + dayDate + "</p>"
         var iconDisplay = "<img src= 'http://openweathermap.org/img/wn/" + fiveDay.weather[0].icon + "@2x.png' />"
-        console.log(iconDisplay)
+
         var tempDisplay = "<p> Temp: " + Math.floor(fiveDay.main.temp) + "&#8457</p>"
         var humidityDisplay = "<p> Humidity: " + fiveDay.main.humidity + "%</p>"
         cardBody.innerHTML = dateDisplay + iconDisplay + tempDisplay + humidityDisplay
@@ -154,10 +153,10 @@ var cityHistory = function(showCity) {
 }
 
 var clickCity = function(city) {
-    console.log("hello")
+
     if (city) {
         getWeatherInfo(city);
-        // cityHistory(city)
+
 
         searchInput.value = "";
     } else {
@@ -167,6 +166,12 @@ var clickCity = function(city) {
 
 
 findCity.addEventListener("click", searchHandler);
+searchInput.addEventListener("keyup", function(event) {
+    // Number 13 is the "Enter" key on the keyboard
+    if (event.keyCode === 13) {
+        searchHandler(event)
+    }
+});
 listItemE1.addEventListener("click", function(e) {
     clickCity(e.target.innerText)
 })

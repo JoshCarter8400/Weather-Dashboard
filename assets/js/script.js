@@ -44,7 +44,9 @@ var searchHandler = function(event) {
     clickCity(city);
 }
 
-
+function capitalFirst(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 var displayWeather = function(data, city, uvData) {
 
@@ -68,6 +70,7 @@ var displayWeather = function(data, city, uvData) {
     var iconDisplay = "<img src= 'http://openweathermap.org/img/wn/" + data.list[0].weather[0].icon + "@2x.png' />"
         // console.log(iconDisplay)
         // console.log(currentDate)
+    city = capitalFirst(city);
     var cityLocation = document.createElement("h2")
     cityLocation.classList = "bold-city"
     cityLocation.innerHTML = city + ": " + currentDate + iconDisplay
@@ -75,28 +78,40 @@ var displayWeather = function(data, city, uvData) {
     var cityTemp = document.querySelector(".weather-data")
     var showConditions = document.createElement("h5")
     showConditions.classList = "temp"
-    showConditions.innerHTML = "<h3> Temprature: " + currentTemp + "</h3>";
+    showConditions.innerHTML = "<h5> Temprature: " + currentTemp + "&#8457</h5>";
 
 
 
 
     var showHumidity = document.createElement("h5")
     showHumidity.classList = "humid"
-    showHumidity.innerHTML = "<h3> Humidity: " + currentHumid + "% </h3>";
+    showHumidity.innerHTML = "<h5> Humidity: " + currentHumid + "% </h5>";
 
     var showWind = document.createElement("h5")
     showWind.classList = "wind"
-    showWind.innerHTML = "<h3> Wind Speed: " + currentWind + " MPH <h3>";
+    showWind.innerHTML = "<h5> Wind Speed: " + currentWind + " MPH <h5>";
+
+
 
     var uvIndex = document.createElement("h5")
+    currentUv.setAttribute = "#current-uv"
     uvIndex.classList = "uvi"
-    uvIndex.innerHTML = "<h3> UV Index: " + currentUv + "</h3>"
+    uvIndex.innerHTML = "<h5> UV Index:  <span id=show-uv>" + currentUv + "</span>" + "</h5>"
 
     cityTemp.appendChild(cityLocation)
     cityTemp.appendChild(showConditions)
     cityTemp.appendChild(showHumidity)
     cityTemp.appendChild(showWind)
     cityTemp.appendChild(uvIndex)
+
+    if (currentUv > 10) {
+        $("#show-uv").addClass("danger")
+    } else if (currentUv >= 6 && currentUv <= 9.9) {
+        $("#show-uv").addClass("moderate")
+    } else {
+        $("#show-uv").addClass("favorable")
+    }
+
 
     var cardDeck = document.querySelector(".card-deck")
 
@@ -147,3 +162,4 @@ var clickCity = function(city) {
 
 
 findCity.addEventListener("click", searchHandler);
+listItemE1.addEventListener("click", clickCity)

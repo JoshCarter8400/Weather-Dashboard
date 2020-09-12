@@ -131,8 +131,8 @@ var displayWeather = function(data, city, uvData) {
         var dateDisplay = "<p id=date>" + dayDate + "</p>"
         var iconDisplay = "<img src= 'http://openweathermap.org/img/wn/" + fiveDay.weather[0].icon + "@2x.png' />"
         console.log(iconDisplay)
-        var tempDisplay = "<p> Temp: " + Math.floor(fiveDay.main.temp) + "</p>"
-        var humidityDisplay = "<p> Humidity: " + fiveDay.main.humidity + "</p>"
+        var tempDisplay = "<p> Temp: " + Math.floor(fiveDay.main.temp) + "&#8457</p>"
+        var humidityDisplay = "<p> Humidity: " + fiveDay.main.humidity + "%</p>"
         cardBody.innerHTML = dateDisplay + iconDisplay + tempDisplay + humidityDisplay
         card.appendChild(cardBody)
         cardDeck.appendChild(card)

@@ -15,6 +15,7 @@ var getWeatherInfo = function(city) {
         response.json().then(function(data) {
             var latitude = data.city.coord.lat
             var longitude = data.city.coord.lon
+                // this is the api call needed to get the info for the uv index
             return fetch("https://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=8d1c76621b3c56e2c6ba4131cbdbfec9").then(function(uvResponse) {
                 uvResponse.json().then(function(uvData) {
                     displayWeather(data, city, uvData);
@@ -34,19 +35,21 @@ var getWeatherInfo = function(city) {
 };
 
 
-
+// function to receive the search input
 var searchHandler = function(event) {
     event.preventDefault();
     // get value from input element
     var searchInput = document.querySelector("#search-input")
     var city = searchInput.value.trim();
-
+    // calls the city function to display the city onto card list 
     cityHistory(city);
+    // calls the get weather function to receive weather info
     getWeatherInfo(city);
 
     searchInput.value = "";
 }
 
+// this function is to make the first letter of the displayed city to be capitalized
 function capitalFirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -56,18 +59,13 @@ var displayWeather = function(data, city, uvData) {
     // clear content
     document.querySelector(".weather-data").textContent = "";
     document.querySelector(".card-deck").innerHTML = "";
-
-    var conditions = data.list[0];
-
+    // these variables are how the info is being pulled from the apis
     var currentTemp = data.list[0].main.temp;
-
     var currentHumid = data.list[0].main.humidity;
-
     var currentWind = data.list[0].wind.speed;
-
     var currentUv = uvData.value;
 
-
+    // displays the current date
     var currentDate = moment().format("M/D/YYYY")
 
     var iconDisplay = "<img src= 'http://openweathermap.org/img/wn/" + data.list[0].weather[0].icon + "@2x.png' />"
@@ -105,7 +103,7 @@ var displayWeather = function(data, city, uvData) {
     cityTemp.appendChild(showHumidity)
     cityTemp.appendChild(showWind)
     cityTemp.appendChild(uvIndex)
-
+        // these conditional statements are to change teh background color of the UV Index based on conditions
     if (currentUv > 10) {
         $("#show-uv").addClass("danger")
     } else if (currentUv >= 6 && currentUv <= 9.9) {
@@ -119,7 +117,7 @@ var displayWeather = function(data, city, uvData) {
     fiveHeader.innerHTML = "<h2> 5 Day Forcast: </h2>"
     var cardDeck = document.querySelector(".card-deck")
 
-
+    // this for loop itereats over the info in the list array to get the conditions for the 5 day display 
     for (var i = 0; i < data.list.length; i += 8) {
         var fiveDay = (data.list[i])
         var dayDate = moment.unix(fiveDay.dt).format("M/D/YYYY")
@@ -139,6 +137,8 @@ var displayWeather = function(data, city, uvData) {
 
     }
 }
+
+// this function is how the cities are diplayed onto the card list to be displayed
 var cityHistory = function(showCity) {
 
 
@@ -152,6 +152,7 @@ var cityHistory = function(showCity) {
     if (clickForCity != null) historyOne.onClick = clickCity
 }
 
+// this function is how the cities are able to be clicked on in the list to be viewed again
 var clickCity = function(city) {
 
     if (city) {
@@ -166,6 +167,7 @@ var clickCity = function(city) {
 
 
 findCity.addEventListener("click", searchHandler);
+// this allows the user to search by using the enter button instead of just the search button click event
 searchInput.addEventListener("keyup", function(event) {
     // Number 13 is the "Enter" key on the keyboard
     if (event.keyCode === 13) {

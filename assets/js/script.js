@@ -3,7 +3,7 @@ var findCity = document.querySelector("#search-btn")
 var listItemE1 = document.querySelector(".list-group")
 var cityCard = document.querySelector("#city-container")
 var clickForCity = document.querySelector(".list-group-item")
-
+var saveCities = JSON.parse(localStorage.getItem(".list-group")) || [];
 
 var getWeatherInfo = function(city) {
 
@@ -37,24 +37,43 @@ var getWeatherInfo = function(city) {
 
 // function to receive the search input
 var searchHandler = function(event) {
+
     event.preventDefault();
     // get value from input element
     var searchInput = document.querySelector("#search-input")
     var city = searchInput.value.trim();
+    saveCities[saveCities.length] = city;
     // calls the city function to display the city onto card list 
     cityHistory(city);
     // calls the get weather function to receive weather info
     getWeatherInfo(city);
 
     searchInput.value = "";
+    localStorage.setItem(".list-group", JSON.stringify(saveCities));
 }
 
-// this function is to make the first letter of the displayed city to be capitalized
-function capitalFirst(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
+
+// saves city list on to page and able to click on again to see weather
+window.addEventListener("load", function() {
+    var list = document.getElementById("city-container")
+    for (i = 0; i < saveCities.length; i++) {
+        var city = document.createElement("li");
+        city.classList.add("list-group-item");
+        city.innerHTML = saveCities[i];
+        list.appendChild(city)
+    }
+
+    // clears local storage 
+    localStorage.clear();
+
+});
+
+
+
+
 
 var displayWeather = function(data, city, uvData) {
+
 
     // clear content
     document.querySelector(".weather-data").textContent = "";
@@ -67,10 +86,10 @@ var displayWeather = function(data, city, uvData) {
 
     // displays the current date
     var currentDate = moment().format("M/D/YYYY")
-
+        // grabs the icons from open weather api
     var iconDisplay = "<img src= 'http://openweathermap.org/img/wn/" + data.list[0].weather[0].icon + "@2x.png' />"
 
-    city = capitalFirst(city);
+    // the content below is how the info is being displayed onto screen
     var cityLocation = document.createElement("h2")
     cityLocation.classList = "bold-city"
     cityLocation.innerHTML = city + ": " + currentDate + iconDisplay
@@ -103,7 +122,7 @@ var displayWeather = function(data, city, uvData) {
     cityTemp.appendChild(showHumidity)
     cityTemp.appendChild(showWind)
     cityTemp.appendChild(uvIndex)
-        // these conditional statements are to change teh background color of the UV Index based on conditions
+        // these conditional statements are to change the background color of the UV Index based on conditions
     if (currentUv > 10) {
         $("#show-uv").addClass("danger")
     } else if (currentUv >= 6 && currentUv <= 9.9) {
@@ -117,7 +136,7 @@ var displayWeather = function(data, city, uvData) {
     fiveHeader.innerHTML = "<h2> 5 Day Forcast: </h2>"
     var cardDeck = document.querySelector(".card-deck")
 
-    // this for loop itereats over the info in the list array to get the conditions for the 5 day display 
+    // this for loop iterates over the info in the list array to get the conditions for the 5 day display 
     for (var i = 0; i < data.list.length; i += 8) {
         var fiveDay = (data.list[i])
         var dayDate = moment.unix(fiveDay.dt).format("M/D/YYYY")
@@ -138,7 +157,7 @@ var displayWeather = function(data, city, uvData) {
     }
 }
 
-// this function is how the cities are diplayed onto the card list to be displayed
+// this function is how the cities are displayed onto the card list to be displayed
 var cityHistory = function(showCity) {
 
 
@@ -174,6 +193,7 @@ searchInput.addEventListener("keyup", function(event) {
         searchHandler(event)
     }
 });
+// makes list able to be clicked on again to display weather
 listItemE1.addEventListener("click", function(e) {
     clickCity(e.target.innerText)
 })

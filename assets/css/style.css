@@ -17,7 +17,9 @@ h1 {
 }
 
 .list-group-item {
+    text-transform: capitalize;
     color: black;
+    cursor: pointer;
 }
 
 #city {
@@ -58,4 +60,8 @@ p {
 
 .favorable {
     background-color: green;
+}
+
+.bold-city {
+    text-transform: capitalize;
 }
